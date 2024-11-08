@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enhanced Google Search</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+  <style>
+    /* Base animations and transitions */
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+
+    @keyframes float-letter {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-5px); }
+      100% { transform: translateY(0px); }
+    }
+
+    /* Hover effects and animations */
+    .search-container:hover {
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+      transform: translateY(-5px);
+    }
+
+    .quick-actions button:hover {
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+      transform: translateY(-5px);
+    }
+
+    #logo:hover {
+      transform: scale(1.05);
+    }
+
+    /* Tooltip styling */
+    .icon-container {
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .icon-container::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 4px 8px;
+      background-color: rgba(0, 0, 0, 0.8);
+      color: white;
+      border-radius: 4px;
+      font-size: 12px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      white-space: nowrap;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .icon-container:hover::after {
+      opacity: 1;
+    }
+
+    .icon-container:hover {
+      transform: translateY(-5px);
+    }
+
+    /* Individual letter animations */
+    .letter {
+      display: inline-block;
+      animation: float-letter 3s ease-in-out infinite;
+    }
+
+    .letter:nth-child(1) { animation-delay: 0s; }
+    .letter:nth-child(2) { animation-delay: 0.1s; }
+    .letter:nth-child(3) { animation-delay: 0.2s; }
+    .letter:nth-child(4) { animation-delay: 0.3s; }
+    .letter:nth-child(5) { animation-delay: 0.4s; }
+    .letter:nth-child(6) { animation-delay: 0.5s; }
+
+    /* Quick Actions */
+    .quick-actions {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+
+    .quick-actions.show {
+      max-height: 200px;
+    }
+  </style>
+</head>
+<body id="body" class="bg-gray-100 flex flex-col items-center justify-center min-h-screen transition-all duration-500">
+
+<script>
+  // Quick Actions Toggle
+  function toggleQuickActions() {
+    const quickActions = document.getElementById('quickActions');
+    quickActions.classList.toggle('show');
+  }
+</script>
+
+  <div id="container" class="bg-white w-full max-w-xl p-8 rounded-2xl shadow-xl text-center transition-all duration-500 mx-4">
+    <!-- Enhanced Google Logo -->
+    <div id="logo" class="text-6xl font-bold mb-8 tracking-wide">
+      <span class="text-blue-600 letter">G</span>
+      <span class="text-red-500 letter">o</span>
+      <span class="text-yellow-500 letter">o</span>
+      <span class="text-blue-600 letter">g</span>
+      <span class="text-green-500 letter">l</span>
+      <span class="text-red-500 letter">e</span>
+    </div>
+
+    <!-- Enhanced Search Bar -->
+    <div class="search-container transition-all duration-300">
+      <form action="https://www.google.com/search" method="GET" target="_blank" class="relative">
+        <div class="flex items-center bg-white rounded-full border border-gray-300 hover:shadow-md transition-shadow duration-300">
+          <input 
+            type="text" 
+            name="q" 
+            id="searchInput"
+            placeholder="Search Google or type a URL" 
+            class="w-full py-4 px-6 rounded-full focus:outline-none"
+            required 
+          />
+          <button type="submit" class="p-3 rounded-full hover:bg-gray-100 transition-colors duration-300 mr-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="mt-6">
+      <button onclick="toggleQuickActions()" class="text-gray-600 hover:text-gray-800 transition-colors duration-300">
+        Quick Actions ▾
+      </button>
+      <div id="quickActions" class="quick-actions mt-4 grid grid-cols-2 gap-4">
+        <button onclick="window.open('https://translate.google.com', '_blank')" class="p-3 rounded-lg bg-white shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 transform hover:-translate-y-1">
+          <img src="https://www.google.com/images/branding/product/1x/translate_24dp.png" alt="Translate" class="h-5 w-5" />
+          Translate
+        </button>
+        <button onclick="window.open('https://maps.google.com', '_blank')" class="p-3 rounded-lg bg-white shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 transform hover:-translate-y-1">
+          <img src="https://maps.gstatic.com/tactile/basepage/pegman_sherlock.png" alt="Maps" class="h-5 w-5" />
+          Maps
+        </button>
+      </div>
+    </div>
+
+    <!-- Enhanced Shortcut Icons -->
+    <div class="grid grid-cols-4 gap-6 mt-8">
+  <div class="icon-container" data-tooltip="YouTube">
+    <a href="https://www.youtube.com" target="_blank" class="block p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+      <img src="youtube-icon.png" alt="YouTube" class="h-8 w-8 mx-auto" />
+    </a>
+  </div>
+  
+  <div class="icon-container" data-tooltip="ChatGPT">
+    <a href="https://chat.openai.com" target="_blank" class="block p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+      <img src=chatgpt-icon.png" alt="ChatGPT" class="h-8 w-8 mx-auto" />
+    </a>
+  </div>
+  
+  <div class="icon-container" data-tooltip="Xbox Cloud Gaming">
+    <a href="https://www.xbox.com/play" target="_blank" class="block p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+      <img src="xbox-cloud-gaming-icon.png" alt="Xbox Cloud Gaming" class="h-8 w-8 mx-auto" />
+    </a>
+  </div>
+  
+  <div class="icon-container" data-tooltip="Google Classroom">
+    <a href="https://classroom.google.com" target="_blank" class="block p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+      <img src="google-classroom-icon.png" alt="Google Classroom" class="h-8 w-8 mx-auto" />
+    </a>
+  </div>
+</div>
+</body>
+</html>
